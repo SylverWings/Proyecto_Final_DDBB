@@ -5,6 +5,11 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    nickname: {
+        type: String,
+        required: true,
+        unique: true
+    },
     email: {
         type: String,
         required: true,
@@ -16,6 +21,14 @@ const UserSchema = new mongoose.Schema({
         // minLength: 6,
         // maxLength: 10
     },
+    favoriteGames: [{
+        type: String,
+        require: false
+    }],
+    desiredGames: [{
+        type: String,
+        require: false
+    }],
     role: {
         type: String,
         enum: ['user', 'admin', 'super_admin'],
