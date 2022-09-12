@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const taskController = require("../controllers/TaskController");
+const taskController = require("../controllers/GameController");
 const isSuperAdmin = require('../middlewares/isSuperAdmin');
 const verifyToken = require('../middlewares/verifyToken');
 
