@@ -7,25 +7,22 @@ const authController = {};
 
 authController.register = async (req, res) => {
     try {
-        const {name, email, password} = req.body;
+        const {name, nickname, email, password} = req.body;
 
-        if(!name || !email || !password){
+        if(!name || !nickname || !email || !password){
             return res.status(400).json({
                 success: false,
-                message: "Name, email, password are required"
+                message: "Name, nickname, email and password are required"
             })
         }
-        //<------- Otra forma de hacerlo ------>
-        // const name = req.body.name;
-        // const email = req.body.email;
-        // const password = req.body.password;
         
         //<---------- codificar password ------->
         const salt = bcrypt.genSaltSync(10);
         const encryptPassword = await bcrypt.hash(password, salt);
         
         const newUser = {
-            name, 
+            name,
+            nickname, 
             email, 
             password: encryptPassword
         };

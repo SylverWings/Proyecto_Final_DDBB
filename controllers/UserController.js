@@ -67,13 +67,11 @@ userController.update = async(req, res) => {
         
         const update = {
             name: req.body.name, 
-            // email: req.body.email, 
-            // password: req.body.password
+            nickname: req.bosy.name            
         };
 
         const userUpdated = await User.findOneAndUpdate(filter, update, {new: true});
-        // const userUpdated = await User.findOne(filter);
-
+       
         return res.status(200).json({
             success: true,
             message: "User update success",

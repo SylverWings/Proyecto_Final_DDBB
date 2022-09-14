@@ -18,16 +18,16 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        // minLength: 6,
-        // maxLength: 10
     },
     favoriteGames: [{
         type: String,
-        require: false
+        require: false,
+        default: null
     }],
     desiredGames: [{
         type: String,
-        require: false
+        require: false,
+        default: null
     }],
     role: {
         type: String,
