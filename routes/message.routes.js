@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const messageController = require("../controllers/messageController");
+const messageController = require("../controllers/MessageController");
 const isSuperAdmin = require('../middlewares/isSuperAdmin');
 const verifyToken = require('../middlewares/verifyToken');
 
