@@ -16,18 +16,19 @@ const GameSchema = new mongoose.Schema({
     },
     genre: {
         type: String,
-        default: true
+        require: true
     },
     imgLink: {
         type: String,
-        require: false
+        require: false,
+        default: null
     },
     description: {
         type: String,
         require: false
     },
     personalScore: {
-        type: Number,
+        type: String,
         require: true
     },
     userId: {

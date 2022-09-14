@@ -5,9 +5,11 @@ gameController.getAll = async (req, res) => {
 
     try {
         const userId = req.user_id;
-        const games = await Game.find({userId}).populate("userId", ["-password"]);
+        const games = await Game.find({
+            userId
+        });
 
-        if(games.length === 0){
+        if (games.length === 0) {
             return res.status(200).json({
                 success: true,
                 message: "You don't have already games"
@@ -29,13 +31,46 @@ gameController.getAll = async (req, res) => {
     }
 };
 
+gameController.getByName = async (req, res) => {
+
+    try {
+        const gameName = req.params.name;
+        const games = await Game.findOne({
+            title: gameName
+        });
+
+        if (games.length === 0) {
+            return res.status(200).json({
+                success: true,
+                message: "The game you're looking for doesn't exist"
+            })
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: 'The game has been found',
+            data: games
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Error retriving the game',
+            error: error.message
+        })
+    }
+};
+
 gameController.getById = async (req, res) => {
 
     try {
         const gameId = req.params.id;
         const userId = req.user_id;
-        
-        const games = await Game.findOne({_id: gameId, userId: userId})
+
+        const games = await Game.findOne({
+            _id: gameId,
+            userId: userId
+        })
 
         return res.status(200).json({
             success: true,
@@ -52,25 +87,37 @@ gameController.getById = async (req, res) => {
     }
 };
 
-gameController.create = async(req, res) =>{
+gameController.create = async (req, res) => {
     try {
-        const {name, duration} = req.body;
+        const {
+            name,
+            year,
+            platform,
+            genre,
+            imgLink,
+            description,
+            personalScore
+        } = req.body;
         const userId = req.user_id;
 
-        if(!name || !duration){
+        if (!name || !year || !platform || !genre || !description || !personalScore) {
             return res.status(400).json({
                 success: false,
-                message: "Name and duration are required"
+                message: "All camps are required"
             })
         };
-        
+
         const newGame = {
-            name,            
-            duration,
+            name,
+            year,
+            platform,
+            genre,
+            description,
+            personalScore,
             userId: req.user_id
         };
 
-        await Game.create(newGame);     
+        await Game.create(newGame);
 
         return res.status(200).json({
             success: true,
@@ -87,20 +134,26 @@ gameController.create = async(req, res) =>{
     }
 }
 
-gameController.update = async(req, res) => {
-    try{
+gameController.update = async (req, res) => {
+    try {
         const filter = {
             _id: req.params.id,
             userId: req.user_id
         };
-        
+
         const update = {
-            name: req.body.name, 
-            status: req.body.status                            
+            name: req.body.name,
+            year: req.body.year,
+            platform: req.body.platform,
+            genre: req.body.genre,
+            description: req.body.description,
+            personalScore: req.body.personalScore
         };
-                    
-        const gameUpdated = await Game.findOneAndUpdate(filter, update, {new: true});   
-        if(!gameUpdated){
+
+        const gameUpdated = await Game.findOneAndUpdate(filter, update, {
+            new: true
+        });
+        if (!gameUpdated) {
             return res.status(200).json({
                 success: true,
                 message: "Game doesn't exists"
@@ -111,8 +164,8 @@ gameController.update = async(req, res) => {
             success: true,
             message: "Game update success",
             data: gameUpdated
-        });    
-    }catch (error){        
+        });
+    } catch (error) {
         return res.status(500).json({
             success: false,
             message: "Error detected",
@@ -121,21 +174,21 @@ gameController.update = async(req, res) => {
     }
 };
 
-gameController.delete = async(req, res)=>{
-    try{
+gameController.delete = async (req, res) => {
+    try {
         const filter = {
             _id: req.params._id,
             userId: req.user_id
         };
-        
+
         const gameDeleted = await Game.findOneAndDelete(filter);
 
         return res.status(200).json({
             success: true,
             message: "Delete game successfully",
             data: gameDeleted
-            })
-    }catch (error){
+        })
+    } catch (error) {
         return res.status(500).json({
             success: false,
             message: "Error detected",
