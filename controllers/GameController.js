@@ -1,66 +1,58 @@
-const Task = require("../models/Task");
-const taskController = {};
+const Game = require("../models/Game");
+const gameController = {};
 
-taskController.getAll = async (req, res) => {
+gameController.getAll = async (req, res) => {
 
     try {
         const userId = req.user_id;
-        const tasks = await Task.find({userId}).populate("userId", ["-password"]);
+        const games = await Game.find({userId}).populate("userId", ["-password"]);
 
-        if(tasks.length === 0){
+        if(games.length === 0){
             return res.status(200).json({
                 success: true,
-                message: "You don't have already tasks"
+                message: "You don't have already games"
             })
         }
 
         return res.status(200).json({
             success: true,
-            message: 'Get all tasks retrivered successfully',
-            data: tasks
+            message: 'Get all games retrivered successfully',
+            data: games
         })
 
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Error retriving tasks: ',
+            message: 'Error retriving games: ',
             error: error.message
         })
     }
 };
 
-taskController.getById = async (req, res) => {
+gameController.getById = async (req, res) => {
 
     try {
-        const taskId = req.params.id;
+        const gameId = req.params.id;
         const userId = req.user_id;
-        console.log(taskId);
-        console.log(userId);
-        const tasks = await Task.findOne({_id: taskId, userId: userId})
-
-        // if(tasks.length === 0){
-        //     return res.status(200).json({
-        //         success: true,
-        //         message: "You don't have already tasks"
-        //     })
-        // }
+        
+        const games = await Game.findOne({_id: gameId, userId: userId})
 
         return res.status(200).json({
             success: true,
-            message: 'Get all tasks retrivered successfully',
-            data: tasks
+            message: 'Get all games retrivered successfully',
+            data: games
         })
 
     } catch (error) {
         return res.status(500).json({
             success: false,
-            message: 'Error retriving tasks: ',
+            message: 'Error retriving games: ',
             error: error.message
         })
     }
 };
 
-taskController.create = async(req, res) =>{
+gameController.create = async(req, res) =>{
     try {
         const {name, duration} = req.body;
         const userId = req.user_id;
@@ -72,30 +64,30 @@ taskController.create = async(req, res) =>{
             })
         };
         
-        const newTask = {
+        const newGame = {
             name,            
             duration,
             userId: req.user_id
         };
 
-        await Task.create(newTask);     
+        await Game.create(newGame);     
 
         return res.status(200).json({
             success: true,
-            message: "New task created",
-            newTask: newTask
+            message: "New game created",
+            data: newGame
         })
 
     } catch (error) {
 
         return res.status(500).json({
             success: false,
-            message: "Task creation failed"
+            message: "Game creation failed"
         })
     }
 }
 
-taskController.update = async(req, res) => {
+gameController.update = async(req, res) => {
     try{
         const filter = {
             _id: req.params.id,
@@ -104,28 +96,21 @@ taskController.update = async(req, res) => {
         
         const update = {
             name: req.body.name, 
-            status: req.body.status            
-            // duration: req.body.duration,           
+            status: req.body.status                            
         };
-        // if(req.body.name === "" || req.body.name == null){
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "Campo name es obligatorio",                
-        //     })
-        // }
                     
-        const taskUpdated = await Task.findOneAndUpdate(filter, update, {new: true});   
-        if(!taskUpdated){
+        const gameUpdated = await Game.findOneAndUpdate(filter, update, {new: true});   
+        if(!gameUpdated){
             return res.status(200).json({
                 success: true,
-                message: "Task doesn't exists"
+                message: "Game doesn't exists"
             })
         }
 
         return res.status(200).json({
             success: true,
-            message: "Task update success",
-            data: taskUpdated
+            message: "Game update success",
+            data: gameUpdated
         });    
     }catch (error){        
         return res.status(500).json({
@@ -136,19 +121,19 @@ taskController.update = async(req, res) => {
     }
 };
 
-taskController.delete = async(req, res)=>{
+gameController.delete = async(req, res)=>{
     try{
         const filter = {
             _id: req.params._id,
             userId: req.user_id
         };
         
-        const taskDeleted = await Task.findOneAndDelete(filter);
+        const gameDeleted = await Game.findOneAndDelete(filter);
 
         return res.status(200).json({
             success: true,
-            message: "Delete task successfully",
-            data: taskDeleted
+            message: "Delete game successfully",
+            data: gameDeleted
             })
     }catch (error){
         return res.status(500).json({
@@ -160,4 +145,4 @@ taskController.delete = async(req, res)=>{
 
 }
 
-module.exports = taskController;
+module.exports = gameController;
