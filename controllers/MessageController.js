@@ -59,8 +59,6 @@ messageController.create = async(req, res) =>{
         const gameId = req.params;
         const userId = req.user_id;
 
-        const postInGame = await Game.findById(gameId);
-
         if(!text){
             return res.status(400).json({
                 success: false,
@@ -70,8 +68,8 @@ messageController.create = async(req, res) =>{
         
         const newMessage = {
             text,
-            userId: req.user_id,
-            gameId: postInGame
+            userId: userId,
+            gameId: gameId
         };
 
         await Message.create(newMessage);     
