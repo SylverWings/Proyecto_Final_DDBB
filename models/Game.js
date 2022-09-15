@@ -10,14 +10,14 @@ const GameSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    platform: {
+    platform: [{
         type: String,
         require: true
-    },
-    genre: {
+    }],
+    genre: [{
         type: String,
         require: true
-    },
+    }],
     imgLink: {
         type: String,
         require: false,
