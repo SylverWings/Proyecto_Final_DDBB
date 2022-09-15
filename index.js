@@ -11,6 +11,14 @@ const app = express();
 app.use(express.json());
 const port = process.env.PORT || 4000;
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
+});
+
 //routes
 app.use("/api", userRoutes);
 app.use("/api", gameRoutes);
@@ -19,7 +27,7 @@ app.use("/api", messageRoutes)
 app.use("/api", authRoutes);
 
 app.get("/", (req, res)=>{
-    return res.send("Bienvenidos a What A Game")
+    return res.send("Bienvenidos a Critical Hit")
 });
 
 app.get("*", (req, res)=>{
