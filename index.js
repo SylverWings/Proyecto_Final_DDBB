@@ -22,8 +22,7 @@ app.use((req, res, next) => {
 //routes
 app.use("/api", userRoutes);
 app.use("/api", gameRoutes);
-app.use("/api", messageRoutes)
-//otra manera de importar routes
+app.use("/api", messageRoutes);
 app.use("/api", authRoutes);
 
 app.get("/", (req, res)=>{
