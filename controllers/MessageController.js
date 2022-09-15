@@ -56,8 +56,10 @@ messageController.getById = async (req, res) => {
 messageController.create = async(req, res) =>{
     try {
         const text = req.body;
-        const gameId = req.params;
+        const game = req.params;
         const userId = req.user_id;
+
+        const gameId = await Game.findById({_id: game});
 
         if(!text){
             return res.status(400).json({
