@@ -14,8 +14,9 @@ authController.register = async (req, res) => {
                 success: false,
                 message: "Name, nickname, email and password are required"
             })
-        }
-        
+        }        
+
+        console.log("estoy aqui")
         //<---------- codificar password ------->
         const salt = bcrypt.genSaltSync(10);
         const encryptPassword = await bcrypt.hash(password, salt);
