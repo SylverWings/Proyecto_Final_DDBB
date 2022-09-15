@@ -1,3 +1,4 @@
+const Game = require("../models/Game");
 const Message = require("../models/Message");
 const messageController = {};
 
@@ -55,7 +56,10 @@ messageController.getById = async (req, res) => {
 messageController.create = async(req, res) =>{
     try {
         const text = req.body;
+        const gameId = req.params;
         const userId = req.user_id;
+
+        const postInGame = await Game.findById(gameId);
 
         if(!text){
             return res.status(400).json({
@@ -66,7 +70,8 @@ messageController.create = async(req, res) =>{
         
         const newMessage = {
             text,
-            userId: req.user_id
+            userId: req.user_id,
+            gameId: postInGame
         };
 
         await Message.create(newMessage);     
