@@ -98,6 +98,7 @@ gameController.create = async (req, res) => {
             description,
             personalScore
         } = req.body;
+        
         const userId = req.user_id;
 
         if (!name || !year || !platform || !genre || !description || !personalScore) {
@@ -112,6 +113,7 @@ gameController.create = async (req, res) => {
             year,
             platform,
             genre,
+            imgLink,
             description,
             personalScore,
             userId: req.user_id
